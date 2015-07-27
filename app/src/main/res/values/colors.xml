@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_primary">#455A64</color>
+    <color name="app_primary_dark">#37474F</color>
+    <color name="fab_colorNormal">#ff3232</color>
+    <color name="fab_colorPressed">#ff6666</color>
+    <color name="fab_colorRipple">#ff0000</color>
+</resources>

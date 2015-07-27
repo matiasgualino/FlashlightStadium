@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#333333"
+    android:orientation="vertical"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    >
+
+    <TextView
+        android:id="@+id/lblIntro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="En esta versión los colores duran medio segundo (0,5 segundos = 500ms)"
+        android:textSize="17sp"/>
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/fab_add"
+        fab:fab_colorNormal="@color/fab_colorNormal"
+        fab:fab_colorPressed="@color/fab_colorPressed"
+        fab:fab_colorRipple="@color/fab_colorRipple"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/colors_cardList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"/>
+
+    <Button
+        android:id="@+id/btnComenzar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/fab_colorNormal"
+        android:text="COMENZAR" />
+
+</LinearLayout>
