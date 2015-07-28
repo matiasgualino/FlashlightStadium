@@ -12,8 +12,17 @@
         android:id="@+id/lblIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="En esta versión los colores duran medio segundo (0,5 segundos = 500ms)"
+        android:text="Desliza para cambiar la duración de cada color. Duración actual: 0.2 segundos (200 ms)."
         android:textSize="17sp"/>
+
+    <com.gc.materialdesign.views.Slider
+        android:id="@+id/slider"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fab_colorNormal"
+        materialdesign:max="2000"
+        materialdesign:min="0"
+        materialdesign:showNumberIndicator="true"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab"

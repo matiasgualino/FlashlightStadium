@@ -2,7 +2,7 @@
 <resources>
 
     <!--  App name -->
-    <string name="app_name">Flashlight Stadium</string>
+    <string name="app_name">StadiumShow</string>
 
     <!-- Prefs Dash-->
     <string name="pref_config">Color Picker</string>
@@ -34,4 +34,10 @@
 
     ]]></string>
     <string name="title_activity_color">ColorActivity</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_launcher">LauncherActivity</string>
 </resources>

@@ -14,12 +14,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.gc.materialdesign.views.Slider;
 import com.github.clans.fab.FloatingActionButton;
 import com.mgualino.flashlightstadium.colorpicker.ColorPickerDialogDash;
 import com.mgualino.flashlightstadium.colorpicker.NsMenuAdapter;
 import com.mgualino.flashlightstadium.colorpicker.NsMenuItemModel;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
     ColorAdapter ca;
     Button btnComenzar;
     ArrayList<Integer> colorList;
+    TextView lblIntro;
+
+    Slider slider;
+
+    Integer delayColor = 250;
+    Double ms;
+
+    String INTRO_TXT = "Desliza para cambiar la duración de cada color. Duración actual: ### segundos ($$$ ms).";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mActivity = this;
+
+        lblIntro = (TextView) findViewById(R.id.lblIntro);
+        final DecimalFormat df = new DecimalFormat("0.00");
+        ms = delayColor/1000.0;
+
+        lblIntro.setText(INTRO_TXT.replace("###", df.format(ms)).replace("$$$", delayColor.toString()));
+
+        slider = (Slider) findViewById(R.id.slider);
+        slider.setValue(delayColor);
+        slider.setOnValueChangedListener(new Slider.OnValueChangedListener() {
+            @Override
+            public void onValueChanged(int i) {
+                delayColor = i;
+                ms = delayColor/1000.0;
+                lblIntro.setText(INTRO_TXT.replace("###", df.format(ms)).replace("$$$", delayColor.toString()));
+            }
+        });
 
         recList = (RecyclerView) findViewById(R.id.colors_cardList);
         recList.setHasFixedSize(true);
@@ -124,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(mActivity, ColorActivity.class);
                 intent.putIntegerArrayListExtra("colors", colorList);
+                intent.putExtra("delayColor", delayColor);
                 mActivity.startActivity(intent);
             }
         });

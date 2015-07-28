@@ -31,7 +31,7 @@ public class ColorActivity extends AppCompatActivity {
     };
 
     ArrayList<Integer> colors;
-
+    Integer delayColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,18 +40,16 @@ public class ColorActivity extends AppCompatActivity {
         bg = findViewById(R.id.bg);
         i = 0;
         colors = getIntent().getIntegerArrayListExtra("colors");
+        delayColor = getIntent().getIntExtra("delayColor", 250);
 
         Timer timer_interact=new Timer();
         timer_interact.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 i++;
-
-
-
                 UpdateGUI();
             }
-        }, 0, 500);
+        }, 0, delayColor);
     }
 
     private void UpdateGUI() {
