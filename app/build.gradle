@@ -27,4 +27,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.github.navasmdc:MaterialDesign:1.5@aar'
     compile 'com.android.support:support-v4:22.2.0'
+    compile 'com.google.android.gms:play-services-ads:7.5.0'
+
 }

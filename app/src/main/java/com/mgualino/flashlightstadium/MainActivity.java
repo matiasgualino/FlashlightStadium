@@ -25,6 +25,8 @@ import com.mgualino.flashlightstadium.colorpicker.NsMenuItemModel;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mActivity = this;
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        mAdView.loadAd(adRequest);
 
         lblIntro = (TextView) findViewById(R.id.lblIntro);
         final DecimalFormat df = new DecimalFormat("0.00");

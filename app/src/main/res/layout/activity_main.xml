@@ -6,6 +6,7 @@
     android:orientation="vertical"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     >
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Desliza para cambiar la duración de cada color. Duración actual: 0.2 segundos (200 ms)."
-        android:textSize="17sp"/>
+        android:textSize="15sp"/>
 
     <com.gc.materialdesign.views.Slider
         android:id="@+id/slider"
@@ -21,8 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@color/fab_colorNormal"
         materialdesign:max="2000"
-        materialdesign:min="0"
-        materialdesign:showNumberIndicator="true"/>
+        materialdesign:min="0"/>
 
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/fab"
@@ -45,8 +45,19 @@
     <Button
         android:id="@+id/btnComenzar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
         android:background="@color/fab_colorNormal"
         android:text="COMENZAR" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 
 </LinearLayout>
