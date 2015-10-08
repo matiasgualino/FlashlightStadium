@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal" >
 
-        <com.mgualino.flashlightstadium.colorpicker.internal.CalendarColorSquare
+        <com.mgualino.stadiumshow.controls.colorpicker.internal.CalendarColorSquare
             android:layout_height="32dip"
         	android:layout_width="32dip"
         	android:layout_marginLeft="13dip"

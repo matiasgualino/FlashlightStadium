@@ -1,43 +1,58 @@
-package com.mgualino.flashlightstadium;
+package com.mgualino.stadiumshow.activities;
 
-import android.graphics.Color;
+import android.app.Activity;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.view.Window;
+import android.view.WindowManager.LayoutParams;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.mgualino.stadiumshow.R;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class ColorActivity extends AppCompatActivity {
 
     private int i;
-    View bg;
+    LinearLayout layout;
     final Handler handler_interact=new Handler();
     final Runnable runnable_interact = new Runnable() {
         public void run() {
-            bg.setBackgroundColor(colors.get(i%colors.size()));
+            layout.setBackgroundColor(colors.get(i%colors.size()));
         }
     };
 
     ArrayList<Integer> colors;
     Integer delayColor;
+    Activity mActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Window window = this.getWindow();
+        window.addFlags(LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(LayoutParams.FLAG_TURN_SCREEN_ON);
         setContentView(R.layout.activity_color);
 
-        bg = findViewById(R.id.bg);
+        mActivity = this;
+
+        final AdView mAdView = (AdView) findViewById(R.id.adView_colors);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
+        layout = (LinearLayout) findViewById(R.id.colorLayout);
+
         i = 0;
         colors = getIntent().getIntegerArrayListExtra("colors");
         delayColor = getIntent().getIntExtra("delayColor", 250);
@@ -69,12 +84,7 @@ public class ColorActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

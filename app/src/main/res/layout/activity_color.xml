@@ -1,8 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/bg"
-    tools:context="com.mgualino.flashlightstadium.ColorActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    android:id="@+id/colorLayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.mgualino.stadiumshow.activities.ColorActivity"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent" android:layout_height="match_parent"
+         >
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView_colors"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
 
-
-</RelativeLayout>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id">
+        </com.google.android.gms.ads.AdView>
+    </RelativeLayout>
+</LinearLayout>

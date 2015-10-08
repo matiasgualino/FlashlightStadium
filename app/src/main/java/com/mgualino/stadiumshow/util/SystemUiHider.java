@@ -1,4 +1,4 @@
-package com.mgualino.flashlightstadium.util;
+package com.mgualino.stadiumshow.util;
 
 import android.app.Activity;
 import android.os.Build;

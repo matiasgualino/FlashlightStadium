@@ -2,26 +2,26 @@
 
 
     <string-array name="default_color_choice_values" translatable="false">
-        <item>#cc0000</item>
-        <item>#ffffff</item>
-        <item>#000000</item>
-        <item>#001eff</item>
-        <item>#fff000</item>
-        <item>#007F00</item>
-        <item>#33b5e5</item>
-        <item>#683c3f</item>
-        <item>#FCBEE8</item>
-        <item>#ff8800</item>
-        <item>#aa66cc</item>
-        <item>#99cc00</item>
-        <item>#ffbb33</item>
-        <item>#ff4444</item>
-        <item>#ff0000</item>
-        <item>#9933cc</item>
-        <item>#eeeeee</item>
-        <item>#cccccc</item>
-        <item>#888888</item>
-
+        <item>#FFffffff</item>
+        <item>#FFfff000</item>
+        <item>#FFffbb33</item>
+        <item>#FF001eff</item>
+        <item>#FF33b5e5</item>
+        <item>#FF99cc00</item>
+        <item>#FF008630</item>
+        <item>#FF007F00</item>
+        <item>#FFFF803A</item>
+        <item>#FFff8800</item>
+        <item>#FFff4444</item>
+        <item>#FFff0000</item>
+        <item>#FFcc0000</item>
+        <item>#FF683c3f</item>
+        <item>#FFFCBEE8</item>
+        <item>#FFFE70F7</item>
+        <item>#FFaa66cc</item>
+        <item>#FF9933cc</item>
+        <item>#FF888888</item>
+        <item>#FF000000</item>
     </string-array>
 
     <string-array name="homescreen_color_choice_values" translatable="false">

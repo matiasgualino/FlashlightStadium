@@ -1,61 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="#333333"
     android:orientation="vertical"
+    android:keepScreenOn="true"
+    android:id="@+id/mainLayout"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
     >
 
     <TextView
+        android:padding="1dp"
         android:id="@+id/lblIntro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Desliza para cambiar la duración de cada color. Duración actual: 0.2 segundos (200 ms)."
-        android:textSize="15sp"/>
+        android:text=""
+        android:textSize="14sp"/>
 
-    <com.gc.materialdesign.views.Slider
-        android:id="@+id/slider"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/fab_colorNormal"
-        materialdesign:max="2000"
-        materialdesign:min="0"/>
+    <RelativeLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/slider_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:background="#333333"
+        android:gravity="center"
+        >
+        <com.mgualino.stadiumshow.controls.segmentedslider.SliderSelector
+            android:id="@+id/slider_selector"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            />
+    </RelativeLayout>
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/fab"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:background="#333333"
+        android:orientation="horizontal"
+        android:keepScreenOn="true"
+        android:id="@+id/controlsTypes"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+        >
+
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:gravity="bottom|left"
+            android:layout_width="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            >
+
+            <com.gc.materialdesign.views.Switch
+                android:id="@+id/switchView"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/fab_colorNormal"
+                android:textOn="Flashlight Activado"
+                android:textOff="Flashlight Desactivado" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="FLASHLIGHT"
+                android:gravity="center"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/switchView"
+                android:id="@+id/txtFlashlight"
+                android:textSize="14sp"/>
+
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnAddColor"
+            android:paddingLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:background="@color/fab_colorNormal"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:text="AGREGAR COLOR" />
+
+        </LinearLayout>
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/segmented2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:src="@drawable/fab_add"
-        fab:fab_colorNormal="@color/fab_colorNormal"
-        fab:fab_colorPressed="@color/fab_colorPressed"
-        fab:fab_colorRipple="@color/fab_colorRipple"/>
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="10dp">
+
+        <RadioButton
+            android:id="@+id/button21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="One"
+            style="@style/RadioButton" />
+
+        <RadioButton
+            android:id="@+id/button22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Two"
+            style="@style/RadioButton" />
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+   <!-- <RelativeLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:background="#333333"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|left"
+        >
+
+        <com.gc.materialdesign.views.Switch
+            android:id="@+id/switchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/fab_colorNormal"
+            android:textOn="Flashlight Activado"
+            android:textOff="Flashlight Desactivado" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="Flashlight"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@+id/switchView"
+            android:textSize="14sp"/>
+
+
+    </RelativeLayout>
+
+-->
+  <!--  <RelativeLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/add_layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
+        android:background="#333333"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|right"
+        >
+
+
+        <TextView
+            android:id="@+id/lblColors"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:text="Elegí tus colores"
+            android:gravity="center"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/fab"
+            android:textSize="14sp"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:src="@drawable/fab_add"
+            fab:fab_colorNormal="@color/fab_colorNormal"
+            fab:fab_colorPressed="@color/fab_colorPressed"
+            fab:fab_colorRipple="@color/fab_colorRipple"/>
+    </RelativeLayout>-->
 
     <android.support.v7.widget.RecyclerView
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:id="@+id/colors_cardList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.5"/>
+        android:layout_weight="0.4"/>
 
-    <Button
+  <!--  <Button
         android:id="@+id/btnComenzar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:textAllCaps="true"
         android:background="@color/fab_colorNormal"
-        android:text="COMENZAR" />
-
+        android:text="INICIAR" />
+-->
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id">
     </com.google.android.gms.ads.AdView>

@@ -1,11 +1,12 @@
-package com.mgualino.flashlightstadium;
+package com.mgualino.stadiumshow.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.mgualino.stadiumshow.R;
 
 import java.util.List;
 

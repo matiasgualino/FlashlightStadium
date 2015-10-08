@@ -1,4 +1,4 @@
-package com.mgualino.flashlightstadium.colorpicker;
+package com.mgualino.stadiumshow.controls.colorpicker;
 
 /**
  * Created by mgualino on 25/7/15.

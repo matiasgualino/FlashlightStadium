@@ -1,6 +1,6 @@
-package com.mgualino.flashlightstadium.colorpicker;
+package com.mgualino.stadiumshow.controls.colorpicker;
 
-import com.mgualino.flashlightstadium.R;
+import com.mgualino.stadiumshow.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by mgualino on 25/7/15.

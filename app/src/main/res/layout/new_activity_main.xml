@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#F3F0F0"
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    android:id="@+id/mainLayout"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/menu"
+        xmlns:ads="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/icons"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            xmlns:ads="http://schemas.android.com/apk/res-auto">
+        <ImageView
+            android:id="@+id/imageFlash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/linterna" />
+
+        <ImageView
+            android:id="@+id/imageColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/palete" />
+
+        <ImageView
+            android:id="@+id/imageON"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/poweri" />
+</LinearLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/colors_cardList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"/>
+
+    <info.hoang8f.android.segmented.SegmentedGroup
+        xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/slider_selector_segmented"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        segmentedgroup:sc_border_width="2dp"
+        segmentedgroup:sc_corner_radius="10dp">
+
+        <RadioButton
+            android:id="@+id/buttonON"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="1"
+            android:buttonTint="@color/white"
+            style="@style/RadioButtonMati" />
+
+        <RadioButton
+            android:id="@+id/button2"
+            android:buttonTint="@color/white"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="2"
+            style="@style/RadioButtonMati" />
+
+        <RadioButton
+            android:id="@+id/button3"
+            android:buttonTint="@color/white"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="3"
+            style="@style/RadioButtonMati" />
+
+        <RadioButton
+            android:id="@+id/button4"
+            android:buttonTint="@color/white"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="4"
+            style="@style/RadioButtonMati" />
+
+        <RadioButton
+            android:id="@+id/button5"
+            android:buttonTint="@color/white"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="5"
+            style="@style/RadioButtonMati" />
+    </info.hoang8f.android.segmented.SegmentedGroup>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+
+</LinearLayout>

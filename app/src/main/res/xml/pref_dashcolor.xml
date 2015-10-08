@@ -22,7 +22,7 @@
     <PreferenceCategory android:title="@string/pref_config" >
         
         
-      <com.mgualino.flashlightstadium.colorpicker.ColorPreference
+      <com.mgualino.stadiumshow.controls.colorpicker.ColorPreference
             android:key="dash_colorkey"
             android:title="Preference Title"
             android:summary="Preference summary"
