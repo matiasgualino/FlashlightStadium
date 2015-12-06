@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!--  App name -->
     <string name="app_name">Stadium Show</string>
 
@@ -11,7 +10,15 @@
     <!-- Menu -->
     <string name="colorpicker_menu_about">About</string>
 
-    <string name="color_picker_default_title">Add color</string>
+    <string name="color_picker_default_title">Agregar un color</string>
+
+
+    <string name="error_colors">Por favor selecciona al menos un color.</string>
+    <string name="error_velocity">Por favor selecciona una velocidad en la parte inferior de la pantalla.</string>
+    <string name="error_camera">Tu celular no tiene camara o no es compatible con nuestra aplicación.</string>
+    <string name="error_flashlight">Por favor apaga el flash.</string>
+    <string name="start_menu">     INICIAR     </string>
+    <string name="select_color_string">Seleccionar colores</string>
 
     <!-- Menu MainActivity -->
     <string name="ns_menu_main_header_dash">Dashclock</string>
@@ -31,13 +38,4 @@
 
 
     <string name="banner_ad_unit_id">ca-app-pub-4401161763017089/4145738854</string>
-
-    <string name="error_colors">Choose at least one color, please.</string>
-    <string name="error_velocity">Choose a speed at the bottom of the screen, please.</string>
-    <string name="error_camera">Your phone does not have a camera or is not compatible with our application.</string>
-    <string name="error_flashlight">Turn off the flash, please.</string>
-    <string name="start_menu">     START     </string>
-    <string name="select_color_string">Select colors</string>
-
-
 </resources>

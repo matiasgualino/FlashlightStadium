@@ -1,59 +1,42 @@
 package com.mgualino.stadiumshow.activities;
 
 import android.app.Activity;
-import android.app.KeyguardManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.gc.materialdesign.views.Slider;
-import com.github.clans.fab.FloatingActionButton;
+import android.widget.Switch;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.mgualino.stadiumshow.adapters.ColorAdapter;
 import com.mgualino.stadiumshow.R;
 import com.mgualino.stadiumshow.controls.colorpicker.ColorPickerDialogDash;
 import com.mgualino.stadiumshow.adapters.NsMenuAdapter;
-import com.mgualino.stadiumshow.controls.segmentedslider.OnSegmentSelectedListener;
-import com.mgualino.stadiumshow.controls.segmentedslider.SliderSelector;
 import com.mgualino.stadiumshow.model.NsMenuItemModel;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
-import org.w3c.dom.Text;
 
 import info.hoang8f.android.segmented.SegmentedGroup;
 
@@ -63,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
     private boolean isLighOn = false;
 
     private Camera camera;
+    private Camera.Parameters pon, poff;
 
     // Selected colors
     private int mSelectedColorDash0 = 0;
@@ -80,12 +64,8 @@ public class MainActivity extends ActionBarActivity {
     private Activity mActivity;
     RecyclerView recList;
     ColorAdapter ca;
-  //  Button btnComenzar;
     ArrayList<Integer> colorList;
-    //TextView lblIntro;
-    TextView lblColors;
-    ArrayList<View> mViews;
-    int lastIndex = 0;
+    int lastIndex = -1;
 
     RadioButton r1;
     RadioButton r2;
@@ -94,24 +74,13 @@ public class MainActivity extends ActionBarActivity {
     RadioButton r5;
 
     SegmentedGroup segmented;
-    ImageView imageColor;
-    ImageView imageFlashlight;
 
-    Camera.Parameters p;
-
-    Button btnAddColor;
-
-    ImageView imageOn;
+    Switch flashlight_switch;
+    CardView select_color_card_view;
 
     Boolean flashON = false;
+    Integer delayColor = -1;
 
-    private static final int MILIS_FACTOR = 220;
-    private static final int CANT_RANGES = 5;
-    Integer delayColor = MILIS_FACTOR*CANT_RANGES;
-
-  //  String INTRO_TXT = "Seleccioná la velocidad con la que se cambian los colores.";
-
-    private boolean running = false;
     private Timer timer = new Timer();
 
     @Override
@@ -126,280 +95,211 @@ public class MainActivity extends ActionBarActivity {
                 .build();
         mAdView.loadAd(adRequest);
 
-        imageFlashlight = (ImageView) findViewById(R.id.imageFlash);
-        imageColor= (ImageView) findViewById(R.id.imageColor);
-        imageOn = (ImageView) findViewById(R.id.imageON);
         r1 = (RadioButton) findViewById(R.id.buttonON);
-        r2= (RadioButton) findViewById(R.id.button2);
+        r2 = (RadioButton) findViewById(R.id.button2);
         r3 = (RadioButton) findViewById(R.id.button3);
         r4 = (RadioButton) findViewById(R.id.button4);
         r5 = (RadioButton) findViewById(R.id.button5);
         segmented = (SegmentedGroup) findViewById(R.id.slider_selector_segmented);
 
-        camera = Camera.open();
-        p = camera.getParameters();
+        try {
+            camera = Camera.open();
+            pon = camera.getParameters();
+            poff = camera.getParameters();
+            pon.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            poff.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 
-        /*lblColors = (TextView) findViewById(R.id.lblColors);
-        lblColors.setTextColor(getResources().getColor(R.color.white));
-*/
+            recList = (RecyclerView) findViewById(R.id.colors_cardList);
+            recList.setHasFixedSize(true);
 
-/*
-        // Init segments
-        mViews = new ArrayList<>();
-        SliderSelector mSliderSelector = (SliderSelector)findViewById(R.id.slider_selector);
+            DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
 
-        for (int i = 0; i < CANT_RANGES; i++) {
-            TextView mTextView = new TextView(this);
-            mTextView.setText("" + (i + 1));
-            if (i == 0) {
-                mTextView.setTextColor(getResources().getColor(R.color.black));
-            } else {
-                mTextView.setTextColor(getResources().getColor(R.color.white));
-            }
-            mViews.add(mTextView);
-        }
-
-        mSliderSelector.setSegmentViews(mViews);
-        mSliderSelector.setSegmentSelectedListener(new OnSegmentSelectedListener() {
-            @Override
-            public void onSegmentSelected(int segmentIndex) {
-                TextView mTextViewOld = (TextView) mViews.get(lastIndex);
-                mTextViewOld.setTextColor(getResources().getColor(R.color.white));
-                mViews.remove(lastIndex);
-                mViews.add(lastIndex, mTextViewOld);
-
-                TextView mTextView = (TextView) mViews.get(segmentIndex);
-                mTextView.setTextColor(getResources().getColor(R.color.black));
-                mViews.remove(segmentIndex);
-                mViews.add(segmentIndex, mTextView);
-                delayColor = MILIS_FACTOR * (CANT_RANGES - segmentIndex);
-                lastIndex = segmentIndex;
-            }
-        });
-
-        /*slider = (Slider) findViewById(R.id.slider);
-        slider.setValue(delayColor);
-        slider.setOnValueChangedListener(new Slider.OnValueChangedListener() {
-            @Override
-            public void onValueChanged(int i) {
-
-                lblIntro.setText(INTRO_TXT.replace("###", df.format(ms)).replace("$$$", delayColor.toString()));
-            }
-        });*/
-/*
-
-
-   /*     final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.hide(false);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fab.show(true);
-                fab.setShowAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.animator.show_from_bottom));
-                fab.setHideAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.animator.hide_to_bottom));
-            }
-        }, 300);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                colordashfragment.show(getFragmentManager(), "dash");
-            }
-        });
-*/
-     /*   btnAddColor = (Button) findViewById(R.id.btnAddColor);
-        btnAddColor.setOnClickListener(new View.OnClickListener() {
-                                           @Override
-                                           public void onClick(View view) {
-                                               colordashfragment.show(getFragmentManager(), "dash");
-                                           }
-                                       });
-       /* btnComenzar = (Button) findViewById(R.id.btnComenzar);
-        btnComenzar.setTextColor(getResources().getColor(R.color.white));
-        btnComenzar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-/*            }
-        });
-*/
-
-        recList = (RecyclerView) findViewById(R.id.colors_cardList);
-        recList.setHasFixedSize(true);
-
-        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        int size = (int) ((dpWidth - 20)/5.0f);
-
-        segmented.setTintColor(Color.parseColor("#000000"), Color.parseColor("#FFFFFF"));
-        segmented.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (timer != null) {
-                    timer.cancel();
-                    timer = null;
-                }
-                switch(checkedId) {
-                    case R.id.buttonON:
-                        lastIndex = 0;
-                        break;
-                    case R.id.button2:
-                        lastIndex = 1;
-                        break;
-                    case R.id.button3:
-                        lastIndex = 2;
-                        break;
-                    case R.id.button4:
-                        lastIndex = 3;
-                        break;
-                    case R.id.button5:
-                        lastIndex = 4;
-                        break;
-                }
-
-                if (flashON) {
-                    if (lastIndex == 0) {
-                        p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                        camera.setParameters(p);
-                    } else {
-                        double pot = 0.8 * lastIndex;
-                        delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
-                        runTimer();
+            segmented.setTintColor(Color.parseColor("#33B5E5"), Color.parseColor("#000000"));
+            segmented.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if (timer != null) {
+                        timer.cancel();
+                        timer = null;
                     }
-                } else {
-                    double pot = 0.5 * lastIndex;
-                    delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
+                    switch (checkedId) {
+                        case R.id.buttonON:
+                            lastIndex = 0;
+                            break;
+                        case R.id.button2:
+                            lastIndex = 1;
+                            break;
+                        case R.id.button3:
+                            lastIndex = 2;
+                            break;
+                        case R.id.button4:
+                            lastIndex = 3;
+                            break;
+                        case R.id.button5:
+                            lastIndex = 4;
+                            break;
+                    }
+
+                    if (flashON) {
+                        if (lastIndex == 0) {
+                            try {
+                                camera.setParameters(pon);
+                            } catch (Exception ex) {
+                                showErrorCamera();
+                            }
+                        } else {
+                            double pot = 0.8 * lastIndex;
+                            delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
+                            runTimer();
+                        }
+                    } else {
+                        double pot = 0.5 * lastIndex;
+                        delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
+                    }
+
+
                 }
+            });
+
+            int cantCells = (int) (dpWidth/80.0f);
+
+            recList.setLayoutManager(new GridLayoutManager(this, cantCells));
 
 
+            final ColorPickerDialogDash colordash = (ColorPickerDialogDash)
+                    getFragmentManager().findFragmentByTag("dash");
+            if (colordash != null) {
+                // re-bind listener to fragment
+                colordash.setOnColorSelectedListener(colordashListner);
             }
-        });
 
-        setRadios();
+            // Init colors to use in dialogs
+            int[] mColor = NsMenuAdapter.ColorUtils.colorChoice(this);
 
-        int cantCells = (int) (dpWidth/80.0f);
+            // Custom Dialog extracted from ColorPreference
+            final ColorPickerDialogDash colordashfragment = ColorPickerDialogDash
+                    .newInstance(R.string.color_picker_default_title, mColor,
+                            mSelectedColorDash1, 5);
 
-        recList.setLayoutManager(new GridLayoutManager(this, cantCells));
+            // Implement listener to get selected color value
+            colordashfragment.setOnColorSelectedListener(colordashListner);
+
+            mAdapter = new NsMenuAdapter(this);
+
+            // Read preferences to get selected Color
+            SharedPreferences shared = PreferenceManager
+                    .getDefaultSharedPreferences(this);
+            if (shared != null) {
+                mSelectedColorDash0 = shared.getInt("dash_colorkey", 0);
+            }
+
+            // -------------------------------------------------------------------------------------
+            // Dashclock
+            // -------------------------------------------------------------------------------------
+
+            // Add Header
+            mAdapter.addHeader(R.string.ns_menu_main_header_dash);
+            // Add Dashclock items
+            NsMenuItemModel mItem1 = new NsMenuItemModel(
+                    R.string.ns_menu_main_row_dash_original, mSelectedColorDash0,
+                    MENU_DASH_0);
+            NsMenuItemModel mItem2 = new NsMenuItemModel(
+                    R.string.ns_menu_main_row_dash_dialog, mSelectedColorDash1,
+                    MENU_DASH_1);
+            mAdapter.addItem(mItem1);
+            mAdapter.addItem(mItem2);
+
+            flashlight_switch = (Switch) findViewById(R.id.flashlight_switch);
+            flashlight_switch.setChecked(false);
+            flashlight_switch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+
+                    if (isChecked) {
+                        setRadios();
+
+                        flashON = true;
+
+                        recList.setVisibility(View.INVISIBLE);
+
+                        Context context = MainActivity.this;
+                        PackageManager pm = context.getPackageManager();
+
+                        // if device support camera?
+                        if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                            Log.e("err", "Device has no camera!");
+                            return;
+                        }
+
+                        if (camera == null) {
+                            camera = Camera.open();
+                        }
+
+                        segmented.check(R.id.buttonON);
+                        r1.setChecked(true);
+                        r2.setChecked(false);
+                        r3.setChecked(false);
+                        r4.setChecked(false);
+                        r5.setChecked(false);
+                        lastIndex = 0;
+
+                        try {
+                            camera.setParameters(pon);
+                        } catch (Exception ex) {
+                            showErrorCamera();
+                        }
+
+                    } else {
+                        recList.setVisibility(View.VISIBLE);
+                        setRadios();
+                        segmented.check(-1);
+                        r1.setChecked(false);
+                        r2.setChecked(false);
+                        r3.setChecked(false);
+                        r4.setChecked(false);
+                        r5.setChecked(false);
+                        lastIndex = -1;
+
+                        flashON = false;
+                        if (camera != null) {
+                            try {
+                                camera.setParameters(poff);
+                                camera.stopPreview();
+                            } catch (Exception ex) {
+                                showErrorCamera();
+                            }
+                        }
+
+                        isLighOn = false;
+                        if (timer != null) {
+                            timer.cancel();
+                            timer = null;
+                        }
+                    }
+
+                }
+            });
+
+            select_color_card_view = (CardView) findViewById(R.id.select_color_card_view);
+            select_color_card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    colordashfragment.show(getFragmentManager(), "dash");
+                }
+            });
 
 
-        final ColorPickerDialogDash colordash = (ColorPickerDialogDash)
-                getFragmentManager().findFragmentByTag("dash");
-        if (colordash != null) {
-            // re-bind listener to fragment
-            colordash.setOnColorSelectedListener(colordashListner);
+            setRadios();
+            loadColorsList();
+        } catch (Exception ex) {
+            Intent i = getBaseContext().getPackageManager()
+                    .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
         }
-
-        // Init colors to use in dialogs
-        int[] mColor = NsMenuAdapter.ColorUtils.colorChoice(this);
-
-        // Custom Dialog extracted from ColorPreference
-        final ColorPickerDialogDash colordashfragment = ColorPickerDialogDash
-                .newInstance(R.string.color_picker_default_title, mColor,
-                        mSelectedColorDash1, 5);
-
-        // Implement listener to get selected color value
-        colordashfragment.setOnColorSelectedListener(colordashListner);
-
-        mAdapter = new NsMenuAdapter(this);
-
-        // Read preferences to get selected Color
-        SharedPreferences shared = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        if (shared != null) {
-            mSelectedColorDash0 = shared.getInt("dash_colorkey", 0);
-        }
-
-        // -------------------------------------------------------------------------------------
-        // Dashclock
-        // -------------------------------------------------------------------------------------
-
-        // Add Header
-        mAdapter.addHeader(R.string.ns_menu_main_header_dash);
-        // Add Dashclock items
-        NsMenuItemModel mItem1 = new NsMenuItemModel(
-                R.string.ns_menu_main_row_dash_original, mSelectedColorDash0,
-                MENU_DASH_0);
-        NsMenuItemModel mItem2 = new NsMenuItemModel(
-                R.string.ns_menu_main_row_dash_dialog, mSelectedColorDash1,
-                MENU_DASH_1);
-        mAdapter.addItem(mItem1);
-        mAdapter.addItem(mItem2);
-
-        imageFlashlight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                setRadios();
-
-                if (camera == null) {
-                    camera = Camera.open();
-                }
-
-                flashON = true;
-
-                imageOn.setVisibility(View.GONE);
-                recList.setVisibility(View.INVISIBLE);
-
-                Context context = MainActivity.this;
-                PackageManager pm = context.getPackageManager();
-
-                // if device support camera?
-                if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
-                    Log.e("err", "Device has no camera!");
-                    return;
-                }
-
-                if (lastIndex == 0) {
-                    isLighOn = true;
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    camera.setParameters(p);
-                } else {
-                    double pot = 0.8 * lastIndex;
-                    delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
-                    runTimer();
-                }
-
-            }
-        });
-
-        imageColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageOn.setVisibility(View.VISIBLE);
-                recList.setVisibility(View.VISIBLE);
-                setRadios();
-                flashON = false;
-                if (camera != null) {
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                    camera.setParameters(p);
-                    camera.stopPreview();
-                    camera = null;
-                }
-
-                isLighOn = false;
-                if (timer != null) {
-                    timer.cancel();
-                    timer = null;
-                }
-
-                colordashfragment.show(getFragmentManager(), "dash");
-            }
-        });
-
-        imageOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mActivity, ColorActivity.class);
-                intent.putIntegerArrayListExtra("colors", colorList);
-                flashON = false;
-                double pot = 0.3 * lastIndex;
-                double delay = Math.pow(2.7183, -pot);
-                intent.putExtra("delayColor", delay);
-                mActivity.startActivity(intent);
-            }
-        });
-
-        loadColorsList();
 
     }
 
@@ -408,43 +308,56 @@ public class MainActivity extends ActionBarActivity {
         if (timer == null) {
             timer = new Timer();
         }
-        final Camera.Parameters p = camera.getParameters();
-        timer = new Timer();
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!isLighOn) {
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-                    camera.setParameters(p);
-                    isLighOn = true;
-                } else {
-                    p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-                    camera.setParameters(p);
-                    isLighOn = false;
-                }
+        if (camera != null) {
+            try {
+                double pot = 0.8 * lastIndex;
+                delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
+                isLighOn = true;
+                camera.setParameters(pon);
+                timer = new Timer();
+
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!isLighOn) {
+                            camera.setParameters(pon);
+                            isLighOn = true;
+                        } else {
+                            camera.setParameters(poff);
+                            isLighOn = false;
+                        }
+                    }
+                }, 0, delayColor);
+            } catch (Exception ex) {
+                showErrorCamera();
             }
-        }, 0, delayColor);
+        } else {
+            showErrorCamera();
+        }
+    }
 
-
-
+    public void showErrorCamera() {
+        new AlertDialog.Builder(this)
+                .setTitle("ERROR")
+                .setMessage(R.string.error_camera)
+                .setNeutralButton("OK", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     public void setRadios() {
-        r1.setText(imageOn.getVisibility() == View.GONE ? "ON" : "1");
-        r2.setText(imageOn.getVisibility() == View.GONE ? "1" : "2");
-        r3.setText(imageOn.getVisibility() == View.GONE ? "2" : "3");
-        r4.setText(imageOn.getVisibility() == View.GONE ? "3" : "4");
-        r5.setText(imageOn.getVisibility() == View.GONE ? "4" : "5");
+        r1.setText(flashlight_switch.isChecked() ? "ON" : "1");
+        r2.setText(flashlight_switch.isChecked() ? "1" : "2");
+        r3.setText(flashlight_switch.isChecked() ? "2" : "3");
+        r4.setText(flashlight_switch.isChecked() ? "3" : "4");
+        r5.setText(flashlight_switch.isChecked() ? "4" : "5");
     }
 
     public void loadColorsList() {
         if (colorList == null) {
             colorList = new ArrayList<Integer>();
         }
-
-        imageOn.setVisibility(colorList.size() > 0 ? View.VISIBLE : View.GONE);
 
         ca = new ColorAdapter(colorList);
         recList.setAdapter(ca);
@@ -474,6 +387,54 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_iniciar) {
+            if (flashlight_switch.isChecked()) {
+                new AlertDialog.Builder(this)
+                        .setTitle("ERROR")
+                        .setMessage(R.string.error_flashlight)
+                        .setNeutralButton("OK", null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            } else {
+                if (segmented.getCheckedRadioButtonId() != -1) {
+                    if (colorList != null && colorList.size() > 0) {
+                        double pot = 0.5 * lastIndex;
+                        delayColor = new Double(Math.pow(2.7183, -pot) * 1000).intValue();
+                        if (delayColor > 0) {
+                            Intent intent = new Intent(mActivity, ColorActivity.class);
+                            intent.putIntegerArrayListExtra("colors", colorList);
+                            flashON = false;
+                            isLighOn = false;
+                            intent.putExtra("delayColor", delayColor);
+                            mActivity.startActivity(intent);
+                        } else {
+                            new AlertDialog.Builder(this)
+                                    .setTitle("ERROR")
+                                    .setMessage(R.string.error_velocity)
+                                    .setNeutralButton("OK", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                    } else {
+                        new AlertDialog.Builder(this)
+                                .setTitle("ERROR")
+                                .setMessage(R.string.error_colors)
+                                .setNeutralButton("OK", null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                } else {
+                    new AlertDialog.Builder(this)
+                            .setTitle("ERROR")
+                            .setMessage(R.string.error_velocity)
+                            .setNeutralButton("OK", null)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            }
+
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -491,10 +452,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (camera != null) {
-            camera.release();
-        }
     }
 
     @Override

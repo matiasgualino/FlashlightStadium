@@ -21,7 +21,7 @@ public class LauncherActivity extends AppCompatActivity {
         Thread timerThread = new Thread(){
             public void run(){
                 try{
-                    sleep(500);
+                    sleep(300);
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
